@@ -5,6 +5,7 @@ import Header from './components/Header';
 import {Switch, Route, Redirect} from 'react-router-dom'
 import ChangePassword from './components/ChangePassword';
 import WelcomePage from './components/WelcomePage';
+import ComposeMail from './components/ComposeMail'
 
 function App() {
  return (
@@ -22,6 +23,9 @@ function App() {
        </Route>
        <Route path='/welcomepage'>
         <WelcomePage /> 
+       </Route>
+       <Route path='/composemail'>
+        <ComposeMail />
        </Route>
      </Switch>
    </Fragment>
