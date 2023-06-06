@@ -21,16 +21,36 @@ const Header = () => {
             Mail Box
           </Navbar.Brand>
           <Nav className="me-auto m-1">
-            {!isLoggedin && <Link to="/login" className="text-light text-decoration-none m-2">
-              Login
-            </Link>}
-            {isLoggedin && <Link to="/composemail" className="text-light text-decoration-none m-2">
-              Compose Email
-            </Link>}
-            {isLoggedin && <Link to="/login" className="text-light text-decoration-none m-2" onClick={logoutHandler}>
-              Logout
-            </Link>}
-            
+            {!isLoggedin && (
+              <Link to="/login" className="text-light text-decoration-none m-2">
+                Login
+              </Link>
+            )}
+            {isLoggedin && (
+              <Link
+                to="/composemail"
+                className="text-light text-decoration-none m-2"
+              >
+                Compose Email
+              </Link>
+            )}
+            {isLoggedin && (
+              <Link
+                to="/inbox"
+                className="text-light text-decoration-none m-2"
+              >
+                Inbox
+              </Link>
+            )}
+            {isLoggedin && (
+              <Link
+                to="/login"
+                className="text-light text-decoration-none m-2"
+                onClick={logoutHandler}
+              >
+                Logout
+              </Link>
+            )}
           </Nav>
         </Container>
       </Navbar>
