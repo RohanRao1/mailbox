@@ -5,20 +5,23 @@ import { useSelector, useDispatch } from "react-redux";
 import { inboxActions } from "../store/inboxSlice";
 import { fetchData } from "../store/inboxSlice";
 import { updateData } from "../store/inboxSlice";
-import { Button } from "bootstrap";
+
 
 const Inbox = () => {
-  const userEmail = useSelector((state) => state.auth.userEmail);
+  const userEmail = localStorage.getItem('email');
   const email = userEmail.replace(/[@.]/g, "");
   // const [mails, setMails] = useState([]);
-  const mails = useSelector((state) => state.inbox.mails);
+  const mails = useSelector((state) => state.inbox.inboxMails);
   const dispatch = useDispatch();
   const unReadMails = useSelector((state) => state.inbox.unreadCount);
   const selectedEmail = useSelector((state) => state.inbox.selectedEmail);
+  
 
   useEffect(() => {
+    
     dispatch(fetchData(email));
-  }, [email, dispatch]);
+  }, [email]);
+  
 
   const openMail = (key) => {
     localStorage.setItem("key clicked", key);
@@ -47,9 +50,10 @@ const Inbox = () => {
             return data;
     } catch (err) {
       console.log(err)
-    }
-     
+    }  
   }
+
+console.log('abcd',mails)
 
   return (
     <div>
