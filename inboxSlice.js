@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { calculateNewValue } from "@testing-library/user-event/dist/utils";
 
 
 const inboxSlice = createSlice({
@@ -20,8 +21,14 @@ const inboxSlice = createSlice({
             const key = localStorage.getItem("key clicked");
             state.mails[key].read = true
             state.unreadCount = totUnreadCount(state.mails)
+        },
+        deleteMail(state,action) {
+            const mails = state.mails
+            const key = action.payload
+            delete mails[key]
+            state.unreadCount = totUnreadCount(mails)
+            
         }
-
     }
     
 })
@@ -93,6 +100,8 @@ export const updateData = (key, mail) => {
          }
     }
 }
+
+
 
 
 export default inboxSlice.reducer

@@ -1,11 +1,11 @@
 import React from "react";
-import { useState } from "react";
 import { useEffect } from "react";
 import { Container, ListGroup, Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { inboxActions } from "../store/inboxSlice";
 import { fetchData } from "../store/inboxSlice";
 import { updateData } from "../store/inboxSlice";
+import { Button } from "bootstrap";
 
 const Inbox = () => {
   const userEmail = useSelector((state) => state.auth.userEmail);
@@ -14,22 +14,41 @@ const Inbox = () => {
   const mails = useSelector((state) => state.inbox.mails);
   const dispatch = useDispatch();
   const unReadMails = useSelector((state) => state.inbox.unreadCount);
-  const selectedEmail = useSelector(state => state.inbox.selectedEmail)
-  
+  const selectedEmail = useSelector((state) => state.inbox.selectedEmail);
 
-  useEffect(()=> {
-    dispatch(fetchData(email))
-  }, [email, dispatch])
+  useEffect(() => {
+    dispatch(fetchData(email));
+  }, [email, dispatch]);
 
   const openMail = (key) => {
-    localStorage.setItem('key clicked', key)
-      dispatch(inboxActions.setReadToTrue())
-      dispatch(inboxActions.setSelectedEmail(mails[key]))
-      dispatch(updateData(key, email))
-  }
+    localStorage.setItem("key clicked", key);
+    dispatch(inboxActions.setReadToTrue());
+    dispatch(inboxActions.setSelectedEmail(mails[key]));
+    dispatch(updateData(key, email));
+  };
 
   const closeModal = () => {
-    dispatch(inboxActions.setSelectedEmail(null))
+    dispatch(inboxActions.setSelectedEmail(null));
+  };
+
+  const deletehandler = async(key) => {
+    dispatch(inboxActions.deleteMail(key))
+    try {
+      const response = fetch(
+      `https://mailbox-89432-default-rtdb.firebaseio.com/${email}/inbox/${key}.json`,{
+        method : 'DELETE'
+      }
+    )
+    if (!response.ok) {
+              throw new Error("failed to fetch data");
+            }
+
+            const data = await response.json();
+            return data;
+    } catch (err) {
+      console.log(err)
+    }
+     
   }
 
   return (
@@ -63,8 +82,19 @@ const Inbox = () => {
                     }}
                   />
                 )}
-                {`${mails[key].from} - ${mails[key].subject} - ${mails[key].content} - ${mails[key].read}`}
+                {`${mails[key].from} - ${mails[key].subject} - ${mails[key].content} `}
               </div>
+              <button
+                style={{
+                  backgroundColor: "lightgray",
+                  border: "1px solid gray",
+                  borderRadius: "10px",
+                  marginLeft: "10%",
+                }}
+                onClick = {() => deletehandler(key)}
+              >
+                Delete
+              </button>
             </ListGroup.Item>
           ))}
         </ListGroup>
