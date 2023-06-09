@@ -18,8 +18,12 @@ const Inbox = () => {
   
 
   useEffect(() => {
+    const reload = () =>  dispatch(fetchData(email));
     
-    dispatch(fetchData(email));
+    const intervalId = setInterval(reload , 2000)
+
+    return () => clearInterval(intervalId)
+
   }, [email]);
   
 
